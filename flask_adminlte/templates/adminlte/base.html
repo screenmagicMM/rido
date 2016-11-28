@@ -134,6 +134,7 @@
       <script src="{{ adminlte_find_resource('js/app.js', cdn='local', use_minified=False) }}"></script>
       <script src="{{ url_for('static', filename='js/myapp.js') }}"></script>
     {%- endblock scripts %}
-
+    {% block ridoappscript %}
+    {% endblock %}
     </body>
 </html>

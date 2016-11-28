@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_adminlte import AdminLTE
 from models import AdminUser, Task, Base
 from flask_sqlalchemy import SQLAlchemy
@@ -39,6 +39,14 @@ def create_rido_application(configfile=None):
     @app.route('/lockscreen')
     def lockscreen():
         return render_template('lockscreen.html', current_user=current_user)
+
+    @app.route('/simulation', methods=['POST'])
+    def simulation():
+        if request.method == 'POST':
+            data = request.form # a multidict containing POST data
+            print(data)
+            
+        return u"<br> Success </br>"    
 
     @app.route('/test')
     def test():

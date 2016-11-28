@@ -70,7 +70,6 @@
 {% block content -%}
           <h4 class="page-header">
             Rido Simulation Results
-            <small>Small boxes are used for viewing statistics. To create a small box use the <code>widgets.small_box</code> widget.</small>
           </h4>
           <!-- Small boxes (Stat box) -->
           <div class="row">
@@ -79,8 +78,8 @@
               widgets.small_box(
                 bgcolor="bg-aqua",
                 header=150,
-                body="New Orders",
-                iconclass="ion ion-bag",
+                body="Total No of Cars",
+                iconclass="fa fa-car",
                 footerlink="#"
               )
             }}
@@ -89,8 +88,8 @@
               widgets.small_box(
                 bgcolor="bg-green",
                 header=53,
-                body="Bounce Rate",
-                iconclass="ion ion-stats-bars",
+                body="No of Days in Operation",
+                iconclass="fa fa-sun-o",
                 footerlink="#"
               )
             }}
@@ -99,8 +98,8 @@
               widgets.small_box(
                 bgcolor="bg-yellow",
                 header=43,
-                body="User Registrations",
-                iconclass="ion ion-person-add",
+                body="Total Pay to Drivers",
+                iconclass="fa fa-money",
                 footerlink="#"
               )
             }}
@@ -109,77 +108,60 @@
               widgets.small_box(
                 bgcolor="bg-red",
                 header=65,
-                body="Unique Visitors",
-                iconclass="ion ion-pie-graph",
+                body="Total Profit for Company",
+                iconclass="fa fa-money",
                 footerlink="#"
               )
             }}
 
           </div><!-- /.row -->
-
-          <!-- Small boxes (Stat box) -->
           <div class="row">
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-blue",
-                header=230,
-                body="Sales",
-                iconclass="ion ion-ios7-cart-outline",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-purple",
-                header=80,
-                percentage=True,
-                body="Conversion Rate",
-                iconclass="ion ion-ios7-briefcase-outline",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-teal",
-                header=14,
-                body="Notifications",
-                iconclass="ion ion-ios7-alarm-outline",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-maroon",
-                header=160,
-                body="Products",
-                iconclass="ion ion-ios7-pricetag-outline",
-                footerlink="#"
-              )
-            }}
-
-          </div><!-- /.row -->
-          <div class="box">
-              <div class="box-header with-border">
-      <h3 class="box-title">Default Box Example</h3>
-      <div class="box-tools pull-right">
-        <!-- Buttons, labels, and many other things can be placed here! -->
-        <!-- Here is a label for example -->
-        <span class="label label-primary">Label</span>
-      </div><!-- /.box-tools -->
-    </div><!-- /.box-header -->
-    <div class="box-body">
-      <div class="chart">
-                <canvas id="areaChart" style="height: 250px; width: 466px;" height="500" width="932"></canvas>
-              </div>
-    </div><!-- /.box-body -->
-    <div class="box-footer">
-      The footer of the box
-  </div><!-- box-footer -->
+          	<div class="col-md-6">
+          		<!-- Cost Box -->
+          		<div class="box">
+          			<div class="box-header with-border">
+          				<h3 class="box-title">Operating Cost over Days</h3>
+          				<div class="box-tools pull-right">
+          					<!-- Buttons, labels, and many other things can be placed here! -->
+          					<!-- Here is a label for example -->
+          					<span class="label label-primary">cost</span>
+          				</div><!-- /.box-tools -->
+          			</div><!-- /.box-header -->
+          			<div class="box-body">
+          				<div class="chart">
+          					<canvas id="areachart" style="height: 250px; width: 466px;" height="500" width="932"></canvas>
+          				</div>
+          			</div><!-- /.box-body -->
+          			<div class="box-footer">
+          				Operating Cost Per N Days
+          			</div><!-- box-footer -->
+          		</div>
+          	</div>
+          	<div class="col-md-6">
+          		<!--  Profit Chart Box -->
+          		<div class="box">
+          			<div class="box-header with-border">
+          				<h3 class="box-title">Profit vs Loss</h3>
+          				<div class="box-tools pull-right">
+          					<!-- Buttons, labels, and many other things can be placed here! -->
+          					<!-- Here is a label for example -->
+          					<span class="label label-primary">profit</span>
+          				</div><!-- /.box-tools -->
+          			</div><!-- /.box-header -->
+          			<div class="box-body">
+          				<div class="chart">
+          					<canvas id="piechart" style="height: 250px; width: 466px;" height="500" width="932"></canvas>
+          				</div>
+          			</div><!-- /.box-body -->
+          			<div class="box-footer">
+          				Profit vs Loss
+          			</div><!-- box-footer -->
+          		</div>
+          	</div>
           </div>
 
 {%- endblock content %}
-
+{% block ridoappscript %}
+<script src="{{ url_for('static', filename='js/areachart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/piechart.js') }}"></script>
+{% endblock %}

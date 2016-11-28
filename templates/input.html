@@ -71,7 +71,7 @@
             <small> Enter Parameters for Investment simulation</small>
           </h4>
 <div class="row">
-  <form>
+  <form id="ipform">
 
 <!-- left column -->
         <div class="col-md-6">
@@ -275,7 +275,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Submit Simulation</button>
+                <button type="button" class="btn btn-primary btn-block btn-lg" id="submitsimulation">Submit Simulation</button>
               </div>
           </div>
           <!-- /.box -->
@@ -285,6 +285,8 @@
 
 {%- endblock content %}
 
-
+{% block ridoappscript %}
+<script src="{{ url_for('static', filename='js/input.js') }}"></script>
+{% endblock %}
 
 
