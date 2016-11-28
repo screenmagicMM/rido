@@ -1,0 +1,185 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+
+{% block navbar %}
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+ 
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="dropdown user user-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-user"></i>
+                <span>{{ current_user.full_name }} </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+{%- endblock navbar %}
+{% block sidebar -%}
+        <!-- sidebar: style can be found in sidebar.less -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="{{ current_user.avatar }}" alt="User Image" class="img-circle">
+            </div>
+            <div class="pull-left info">
+              <p>{{ current_user.full_name }}</p>
+              <a href="#">
+                <i class="fa fa-circle text-success"></i>
+                Online
+              </a>
+            </div>
+          </div>
+          <ul class="sidebar-menu">
+          <li class="header">HEADER</li>
+            <li class="active">
+              <a href="{{ url_for('index') }}">
+                <i class="fa fa-car"></i> <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li class="active">
+              <a href="{{url_for('input') }}">
+                <i class="fa fa-keyboard-o"></i>
+                <span>Input</span>
+                <!-- <i class="fa fa-angle-left pull-right"></i> -->
+              </a>
+            </li>
+
+          </ul>
+        <!-- /.sidebar -->
+{%- endblock sidebar %}
+{% block content_header -%}
+          <h1>
+            Dashboard
+            <small>Preview page</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+          </ol>
+{%- endblock content_header %}
+{% block content -%}
+          <h4 class="page-header">
+            Rido Simulation Results
+            <small>Small boxes are used for viewing statistics. To create a small box use the <code>widgets.small_box</code> widget.</small>
+          </h4>
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-aqua",
+                header=150,
+                body="New Orders",
+                iconclass="ion ion-bag",
+                footerlink="#"
+              )
+            }}
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-green",
+                header=53,
+                body="Bounce Rate",
+                iconclass="ion ion-stats-bars",
+                footerlink="#"
+              )
+            }}
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-yellow",
+                header=43,
+                body="User Registrations",
+                iconclass="ion ion-person-add",
+                footerlink="#"
+              )
+            }}
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-red",
+                header=65,
+                body="Unique Visitors",
+                iconclass="ion ion-pie-graph",
+                footerlink="#"
+              )
+            }}
+
+          </div><!-- /.row -->
+
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-blue",
+                header=230,
+                body="Sales",
+                iconclass="ion ion-ios7-cart-outline",
+                footerlink="#"
+              )
+            }}
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-purple",
+                header=80,
+                percentage=True,
+                body="Conversion Rate",
+                iconclass="ion ion-ios7-briefcase-outline",
+                footerlink="#"
+              )
+            }}
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-teal",
+                header=14,
+                body="Notifications",
+                iconclass="ion ion-ios7-alarm-outline",
+                footerlink="#"
+              )
+            }}
+
+            {{
+              widgets.small_box(
+                bgcolor="bg-maroon",
+                header=160,
+                body="Products",
+                iconclass="ion ion-ios7-pricetag-outline",
+                footerlink="#"
+              )
+            }}
+
+          </div><!-- /.row -->
+          <div class="box">
+              <div class="box-header with-border">
+      <h3 class="box-title">Default Box Example</h3>
+      <div class="box-tools pull-right">
+        <!-- Buttons, labels, and many other things can be placed here! -->
+        <!-- Here is a label for example -->
+        <span class="label label-primary">Label</span>
+      </div><!-- /.box-tools -->
+    </div><!-- /.box-header -->
+    <div class="box-body">
+      <div class="chart">
+                <canvas id="areaChart" style="height: 250px; width: 466px;" height="500" width="932"></canvas>
+              </div>
+    </div><!-- /.box-body -->
+    <div class="box-footer">
+      The footer of the box
+  </div><!-- box-footer -->
+          </div>
+
+{%- endblock content %}
+
