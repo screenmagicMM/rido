@@ -30,7 +30,7 @@ class AdminUser(object):
     """
     User Object Gives Info to Flask-adminLTE User Info.
     """
-    full_name = "Sandip More"
+    full_name = "Tamilselvan"
     avatar = "/static/img/avatar.png"
     created_at = dateutil.parser.parse("November 28, 2016")
 

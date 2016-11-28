@@ -25,6 +25,8 @@
     <!-- Pace -->
     <link href="{{ adminlte_find_resource('plugins/pace/pace.css', cdn='local') }}" rel="stylesheet" type="text/css">
 
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet" type="text/css">
+
     {%- endblock styles %}
     {%- endblock head %}
   </head>
@@ -130,11 +132,15 @@
         /* turning flask flash messages into js popup notifications */
         window.popupMessages = {{ get_flashed_messages(with_categories=True) | tojson | safe }};
       </script>
+      <!-- form validdator -->
+      <script src="{{ adminlte_find_resource('js/plugins/validator/jquery.validate.js', cdn='local') }}"></script>
+      <script src="{{ adminlte_find_resource('js/plugins/validator/additional-methods.js', cdn='local') }}"></script>
       <!-- Local application JS -->
       <script src="{{ adminlte_find_resource('js/app.js', cdn='local', use_minified=False) }}"></script>
-      <script src="{{ url_for('static', filename='js/myapp.js') }}"></script>
+      <!--<script src="{{ url_for('static', filename='js/myapp.js') }}"></script> -->
     {%- endblock scripts %}
+
     {% block ridoappscript %}
-    {% endblock %}
+    {% endblock ridoappscript %}
     </body>
 </html>
