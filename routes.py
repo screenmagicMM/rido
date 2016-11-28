@@ -24,7 +24,10 @@ task_future = None
     
 
 def run_long_task(data):
-    global db_session
+    global db_session, engine
+    SimulationTask.__table__.drop(bind=engine)
+    SimulationTask.__table__.create(bind=engine)
+    db_session.commit()
     print("Simulation Task started!")
     sleep(10)
     simdata = {
