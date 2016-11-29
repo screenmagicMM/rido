@@ -1,5 +1,4 @@
 (function(){
-      //Error Handler
 $.validator.setDefaults({
     highlight: function(element) {
         $(element).closest('.form-group').addClass('has-error');
@@ -132,9 +131,8 @@ $.validator.setDefaults({
         url: "simulation", //process to mail
         data: formdata,
         success: function(msg){
-            //alert(JSON.stringify(msg));
             if(msg.Status==="success"){
-              alert("Sucess");
+              alert("Simulation Started ");
             } else if(msg.Status==="exception") {
               alert('Exception in Processing Tasks');
             } else if(msg.Status === "reject") {

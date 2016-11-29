@@ -10,15 +10,19 @@ from models import db_session, engine, Base
 from tasks import run_long_task
 from tasks import print_exception
 from sqlalchemy import func
+import logging
+import logging.config
+from config import g_logger
+
 
 #Only One Task per time
 executor = ThreadPoolExecutor(1)
 task_future = None
+
+
+
     
-
-
-
-
+#Main function contains multiple routes
 def create_rido_application(configfile=None):
     app = Flask(__name__)
     AdminLTE(app)
@@ -33,21 +37,21 @@ def create_rido_application(configfile=None):
 
     @app.before_first_request
     def setup():
-        print ("First Executed")
+        g_logger.info ("First Time Creating Local DB")
         # Recreate database each time for demo
         Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
         #db.session.add(SimulationTask('First'))
         #db.session.add(SimulationTask('Second'))
         db_session.commit()
-        print ('comited happened')
+        g_logger.info ('DB Created ')
 
 
 
     @app.route('/')
     def index():
         sim = db_session.query(SimulationTask).first()
-        print('--->',sim)
+        g_logger.debug('---> {}'.format(sim))
         try:
             if not sim == None:
                 if sim.status == 'DONE':
@@ -55,13 +59,13 @@ def create_rido_application(configfile=None):
                     results = db_session.query(ResultsPerDay).all()
                     sumdrv, sumcar = db_session.query(func.sum(ResultsPerDay.driver_cost),
                                             func.sum(ResultsPerDay.car_cost)).first()
-                    data['ncars'] = results[0].cars
+                    data['investment'] = sim.total_investment
                     data['drivercost']= "{0:.2f}".format(sumdrv)
                     data['carcost']= "{0:.2f}".format(sumcar)
                     investment = sim.total_investment
                     profit = investment - (sumdrv + sumcar)
-                    print('--> Profit ',profit)
-                    print('--> Total investment', investment)
+                    g_logger.debug('--> Profit {} '.format(profit))
+                    g_logger.debug('--> Total investment{} '.format(investment))
                     data['profit'] = "{0:.2f}".format(profit)
 
                     #prepare Chart Data
@@ -75,8 +79,8 @@ def create_rido_application(configfile=None):
 
                     cdata = [dcost,ccost]
 
-                    print('---->',labels)
-                    print('---->',cdata)
+                    g_logger.debug('----> {}'.format(labels))
+                    g_logger.debug('----> {}'.format(cdata))
                     return render_template('index.html', current_user = current_user, results = data, 
                                           chartlabel = labels, chartdata= cdata,profit=profit, 
                                           carexpenses=sumcar, driverexpenses=sumdrv, nodays=sim.no_of_days)
@@ -104,16 +108,8 @@ def create_rido_application(configfile=None):
                     task_future = executor.submit(run_long_task, data)
                     return jsonify(response=200,Status="success")
                 except Exception as e:
-                    print(e)
+                    print_exception()
                     return jsonify(response=400, Statis="exception")
         else:
             return jsonify(response=400,Status="reject")
-
-
-    @app.route('/test')
-    def test():
-        tasks = db_session.query(SimulationTask).all()
-        return u"<br>".join([u"{0}: {1}".format(task.id, task.status) for task in tasks])
-
-
     return app

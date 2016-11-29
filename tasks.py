@@ -4,6 +4,8 @@ from time import sleep
 import linecache
 import sys
 import random
+from config import g_logger
+
 
 def print_exception():
     exc_type, exc_obj, tb = sys.exc_info()
@@ -12,7 +14,7 @@ def print_exception():
     filename = f.f_code.co_filename
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
-    print ('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
+    g_logger.debug ('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
 
 
 def insert_post_data_to_db(data):
@@ -21,8 +23,8 @@ def insert_post_data_to_db(data):
         SimulationTask.__table__.drop(bind=engine)
         SimulationTask.__table__.create(bind=engine)
         db_session.commit()
-        print("Simulation Task started!")
-        print('---->',data)
+        g_logger.debug("Simulation Task started!")
+        g_logger.debug('{}'.format(data))
         simdata = {
             "total_investment" : data['total_investment'].split(',')[0],
             "no_of_days" :data['no_of_days'].split(',')[0],
@@ -42,16 +44,13 @@ def insert_post_data_to_db(data):
             "avg_disel_maint" : data['avg_disel_maint'].split(',')[0],
             "avg_lpg_maint" : data['avg_lpg_maint'].split(',')[0]
         }
-        print('---------->',simdata)
-        sleep(5)
-
+        g_logger.debug('simdata {}'.format(simdata))
         sim = SimulationTask(simdata)
         db_session.add(sim)
-        print ('added')
+        g_logger.debug ('added')
         db_session.commit()
-        print('Simulation Done')
+        g_logger.debug('Simulation Done')
     except Exception as e:
-        print(e)
         print_exception()
 
 def calculate_tasks():
@@ -128,8 +127,8 @@ def calculate_tasks():
             per_driver_cost = pay_perday * drv_time_per_driver
             r_total_driver_cost = ndrivers * pay_perday
 
-            print('--->',' Total driver_cost', r_total_driver_cost)
-            print('---->',' Total car Cost', r_total_car_cost)
+            g_logger.debug(' Total driver_cost = {}'.format(r_total_driver_cost))
+            g_logger.debug(' Total car Cost = {}'.format(r_total_car_cost))
             r = ResultsPerDay(r_total_driver_cost, r_total_car_cost, total_cars)
             sim.status='DONE'
             db_session.add(r)
@@ -137,7 +136,6 @@ def calculate_tasks():
 
 
     except Exception as e:
-        print (e)
         print_exception()
 
 
@@ -146,5 +144,4 @@ def run_long_task(data):
         insert_post_data_to_db(data)
         calculate_tasks()
     except Exception as e:
-        print(e)
-    
+        print_exception()    

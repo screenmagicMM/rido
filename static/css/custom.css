@@ -1,9 +1,4 @@
-/* --- Form B --- */
-/*.error {
-float:left;
-margin:0;
-color:red;
-}*/
+
 #ipform label.error {
 border:1px solid red;
 float: left;

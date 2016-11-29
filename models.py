@@ -45,8 +45,6 @@ class SimulationTask(Base):
 
 
     def __init__(self,kwargs):
-        print('init')
-        print(kwargs)
         self.status = 'NOTSTART'
         self.total_investment = int(kwargs['total_investment'])
         self.no_of_days = int(kwargs['no_of_days'])
@@ -72,6 +70,7 @@ class SimulationTask(Base):
 
 class ResultsPerDay(Base):
     """
+    Storing Results per Day
     """
     __tablename__ = 'results'
     id = Column(Integer, primary_key=True)

@@ -76,8 +76,8 @@
             {{
               widgets.small_box(
                 bgcolor="bg-aqua",
-                header=results['ncars'],
-                body="Total No of Cars",
+                header=results['investment'],
+                body="Total Investment",
                 iconclass="fa fa-car",
                 footerlink="#"
               )
@@ -88,7 +88,7 @@
                 bgcolor="bg-green",
                 header=results['carcost'],
                 body="Total Cost for Car",
-                iconclass="fa fa-money",
+                iconclass="fa fa-car",
                 footerlink="#"
               )
             }}
@@ -98,7 +98,7 @@
                 bgcolor="bg-yellow",
                 header=results['drivercost'],
                 body="Total Pay to Drivers",
-                iconclass="fa fa-money",
+                iconclass="fa fa-user",
                 footerlink="#"
               )
             }}
@@ -140,11 +140,15 @@
           		<!--  Profit Chart Box -->
           		<div class="box">
           			<div class="box-header with-border">
-          				<h3 class="box-title">Profit vs Loss</h3>
+          				<h3 class="box-title">Profit vs expenses</h3>
           				<div class="box-tools pull-right">
           					<!-- Buttons, labels, and many other things can be placed here! -->
           					<!-- Here is a label for example -->
-          					<span class="label label-primary">profit</span>
+                    {% if profit <= 0 %}
+          					<span class="label label-danger">loss</span>
+                    {% else %}
+                    <span class="label label-danger"> profit</span>
+                    {% endif %}
           				</div><!-- /.box-tools -->
           			</div><!-- /.box-header -->
           			<div class="box-body">
@@ -170,6 +174,10 @@ var cdata  = {{ chartdata | tojson|safe }};
 var profit = {{ profit}};
 var carexpenses = {{ carexpenses }};
 var driverexpenses = {{ driverexpenses }};
+
+if (profit <= 0){
+  profit = 0.0;
+}
 var pieData = [
       {
         value: profit.toFixed(2),

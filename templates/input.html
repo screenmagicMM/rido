@@ -88,13 +88,13 @@
                   <label for="totinvest">Enter Total Investment Amount</label>
                   <div class="input-group">
                     <span class="input-group-addon">Rs</span>
-                    <input type="text" class="form-control" id="totinvest" name="totinvest"placeholder="0" required>
+                    <input type="text" class="form-control" id="totinvest" name="totinvest"placeholder="10000" min="10000" required>
                     <span class="input-group-addon">.00</span>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="noofdays">No of Days to Run Simulation</label>
-                  <input type="text" class="form-control" id="noofdays" name="noofdays" placeholder="0" required>
+                  <input type="text" class="form-control" id="noofdays" name="noofdays" placeholder="0" min="5" required>
                 </div>
                 
               </div>
@@ -146,15 +146,15 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="petrolprice">Petrol Price Per Litre</label>
-                  <input type="text" class="form-control" id="petrolprice" name="petrolprice" placeholder="0" required>
+                  <input type="text" class="form-control" id="petrolprice" name="petrolprice" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="diselprice">Disel Price Per Litre</label>
-                  <input type="text" class="form-control" id="diselprice" name="diselprice" placeholder="0" required>
+                  <input type="text" class="form-control" id="diselprice" name="diselprice" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="lpgprice">LPG Price Per Kilo</label>
-                  <input type="text" class="form-control" id="lpgprice" name="lpgprice" placeholder="0" required>
+                  <input type="text" class="form-control" id="lpgprice" name="lpgprice" placeholder="0" min="1" required>
                 </div>
               </div>
               <!-- /.box-body -->
@@ -180,15 +180,15 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="noofdrivers">No of Drivers</label>
-                  <input type="text" class="form-control" id="noofdrivers" name="noofdrivers" placeholder="0" required>
+                  <input type="text" class="form-control" id="noofdrivers" name="noofdrivers" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="drvtimeperdrver">No of Driving Time per Driver</label>
-                  <input type="text" class="form-control" id="drvtimeperdrver" name="drvtimeperdrver" placeholder="0" required>
+                  <input type="text" class="form-control" id="drvtimeperdrver" name="drvtimeperdrver" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="drvsal">No of Fixed Salary per Hour per Driver</label>
-                  <input type="text" class="form-control" id="drvsal" name="drvsal" placeholder="0" required>
+                  <input type="text" class="form-control" id="drvsal" name="drvsal" placeholder="0" min="1" required>
                 </div>
               </div>
               <!-- /.box-body -->
@@ -210,15 +210,15 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="nooflpgcar">No of LPG Cars</label>
-                  <input type="text" class="form-control" id="nooflpgcar" name="nooflpgcar" placeholder="0" required>
+                  <input type="text" class="form-control" id="nooflpgcar" name="nooflpgcar" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="noofpetrolcar">No of Petrol Cars</label>
-                  <input type="text" class="form-control" id="noofpetrolcar" name="noofpetrolcar" placeholder="0" required>
+                  <input type="text" class="form-control" id="noofpetrolcar" name="noofpetrolcar" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="noofdiselcar">No of Diesel Cars</label>
-                  <input type="text" class="form-control" id="noofdiselcar" name="noofdiselcar" placeholder="0" required>
+                  <input type="text" class="form-control" id="noofdiselcar" name="noofdiselcar" placeholder="0" min="1" required>
                 </div>
               </div>
               <!-- /.box-body -->
@@ -239,20 +239,20 @@
             <!-- form start -->
               <div class="box-body">
                 <div class="form-group">
-                  <label for="avgmaint">Average Maintenance Per Car Per Day</label>
-                  <input type="text" class="form-control" id="avgmaint" name="avgmaint" placeholder="0" required>
+                  <label for="avgmaint">Average Allowance Per Driver Per Day</label>
+                  <input type="text" class="form-control" id="avgmaint" name="avgmaint" placeholder="0" min="1" required>
                 </div>
                <div class="form-group">
                   <label for="avgpetrolmaint">Average Maintenance for Petrol Car Per Day</label>
-                  <input type="text" class="form-control" id="avgpetrolmaint" name="avgpetrolmaint" placeholder="0" required>
+                  <input type="text" class="form-control" id="avgpetrolmaint" name="avgpetrolmaint" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="avgdiselmaint">Average Maintenance for Disel Car Per Day</label>
-                  <input type="text" class="form-control" id="avgdiselmaint" name="avgdiselmaint" placeholder="0" required>
+                  <input type="text" class="form-control" id="avgdiselmaint" name="avgdiselmaint" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
                   <label for="avglpgmaint">Average Maintenance for LPG Car Per Day</label>
-                  <input type="text" class="form-control" id="avglpgmaint" name="avglpgmaint" placeholder="0" required>
+                  <input type="text" class="form-control" id="avglpgmaint" name="avglpgmaint" placeholder="0" min="1" required>
                 </div> 
               </div>
               <!-- /.box-body -->
