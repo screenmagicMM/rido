@@ -50,7 +50,7 @@ def create_rido_application(configfile=None):
     @app.route('/input')
     def input():
         return render_template('input.html', current_user=current_user)
-        
+
 
     @app.route('/simulation', methods=['POST'])
     def simulation():
@@ -65,7 +65,7 @@ def create_rido_application(configfile=None):
                     print(e)
                     return jsonify(response=400, Statis="exception")
         else:
-            return jsonify(response=400,Status="Task In Progress Rejecting Input")
+            return jsonify(response=400,Status="reject")
 
 
     @app.route('/test')

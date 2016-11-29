@@ -34,6 +34,7 @@ class SimulationTask(Base):
     lpg_price = Column(Float)
     no_of_drivers = Column(Integer)
     drive_time_per_drver = Column(Float)
+    driver_salary = Column(Float)
     lpg_cars_no = Column(Integer)
     petrol_cars_no = Column(Integer)
     disel_cars_no = Column(Integer)
@@ -56,6 +57,7 @@ class SimulationTask(Base):
         self.lpg_price = float(kwargs['lpg_price'])
         self.no_of_drivers = int(kwargs['no_of_drivers'])
         self.drive_time_per_drver = float(kwargs['drive_time_per_drver'])
+        self.driver_salary  = float(kwargs['driver_salary'])
         self.lpg_cars_no = int(kwargs['lpg_cars_no'])
         self.petrol_cars_no = int(kwargs['petrol_cars_no'])
         self.disel_cars_no = int(kwargs['disel_cars_no'])
@@ -67,6 +69,24 @@ class SimulationTask(Base):
 
     def __repr__(self):
         return '<SimulationTask %r>' % (self.id)
+
+class ResultsPerDay(Base):
+    """
+    """
+    __tablename__ = 'results'
+    id = Column(Integer, primary_key=True)
+    driver_cost = Column(Float)
+    car_cost = Column(Float)
+    cars = Column(Integer)
+
+    def __init__(self, driver_cost, car_cost, cars):
+        self.driver_cost = driver_cost
+        self.car_cost = car_cost
+        self.cars = cars
+
+    def __repr__(self):
+        return '<ResultsPerDay %r>' % (self.id)
+        
 
 class AdminUser(object):
     """

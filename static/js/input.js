@@ -28,6 +28,7 @@ $.validator.setDefaults({
       'lpg_price' : "required",
       'no_of_drivers' : "required",
       'drive_time_per_drver' : "required",
+      'driver_salary' : "required",
       'lpg_cars_no' : "required",
       'petrol_cars_no' : "required",
       'disel_cars_no' : "required",
@@ -47,6 +48,7 @@ $.validator.setDefaults({
       'lpg_price' : "Please enter LPG Price per Cylinder",
       'no_of_drivers' : "Please enter No of Drivers we want to have",
       'drive_time_per_drver' : "Please enter Driving Time per Driver",
+      'driver_salary': "Please enter Driver salary per hour per day",
       'lpg_cars_no' : "Please Enter no of LPG Cars we have",
       'petrol_cars_no' : "Please enter no of Petrol Cars we have",
       'disel_cars_no' : "Please enter no of Disel cars we have",
@@ -84,6 +86,7 @@ $.validator.setDefaults({
     //Driver Cost
     var no_of_drivers = $("#noofdrivers").val();
     var drive_time_per_drver = $("#drvtimeperdrver").val();
+    var driver_salary = $("#drvsal").val();
     // No of Cars
     var lpg_cars_no = $("#nooflpgcar").val();
     var petrol_cars_no = $("#noofpetrolcar").val();
@@ -96,7 +99,7 @@ $.validator.setDefaults({
 
     if(total_investment && no_of_days && areas_no && no_of_kms &&
        petrol_price && disel_price && lpg_price && no_of_drivers &&
-       drive_time_per_drver && lpg_cars_no && petrol_cars_no &&
+       drive_time_per_drver && driver_salary && lpg_cars_no && petrol_cars_no &&
        disel_cars_no && avg_maint_cost && avg_petrol_maint && avg_disel_maint &&
        avg_lpg_maint)
     {
@@ -113,6 +116,7 @@ $.validator.setDefaults({
       //Driver Cost
       'no_of_drivers' : no_of_drivers,
       'drive_time_per_drver' : drive_time_per_drver,
+      'driver_salary': driver_salary,
       // No of Cars
       'lpg_cars_no' : lpg_cars_no,
       'petrol_cars_no' : petrol_cars_no,
@@ -128,7 +132,14 @@ $.validator.setDefaults({
         url: "simulation", //process to mail
         data: formdata,
         success: function(msg){
-            alert("Sucess");
+            //alert(JSON.stringify(msg));
+            if(msg.Status==="success"){
+              alert("Sucess");
+            } else if(msg.Status==="exception") {
+              alert('Exception in Processing Tasks');
+            } else if(msg.Status === "reject") {
+              alert('Previous Task not Completed Just Wait SomeTime');
+            }
         },
         error: function(){
             alert("failure");

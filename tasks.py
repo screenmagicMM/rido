@@ -1,4 +1,4 @@
-from models import SimulationTask
+from models import SimulationTask, ResultsPerDay
 from models import db_session, engine, Base
 from time import sleep
 import linecache
@@ -33,6 +33,7 @@ def insert_post_data_to_db(data):
             "lpg_price" : data['lpg_price'].split(',')[0],
             "no_of_drivers" : data['no_of_drivers'].split(',')[0],
             "drive_time_per_drver" : data['drive_time_per_drver'].split(',')[0],
+            "driver_salary" : data['driver_salary'].split(',')[0],
             "lpg_cars_no" : data['lpg_cars_no'].split(',')[0],
             "petrol_cars_no" : data['petrol_cars_no'].split(',')[0],
             "disel_cars_no" : data['disel_cars_no'].split(',')[0],
@@ -55,79 +56,89 @@ def insert_post_data_to_db(data):
 
 def calculate_tasks():
     try:
+        ResultsPerDay.__table__.drop(bind=engine)
+        ResultsPerDay.__table__.create(bind=engine)
+
         sim = db_session.query(SimulationTask).first()
         sim.status = 'PROCESSING'
         db_session.commit()
+        #Per Day
+        ndays = sim.no_of_days
+        for x in range(1,ndays+1):
+            #PER Drivers
+            ndrivers = sim.no_of_drivers
+            drv_time_per_driver = sim.drive_time_per_drver;
 
-        #PER Drivers
-        ndrivers = sim.no_of_drivers
-        drv_time_per_driver = sim.drive_time_per_drver;
+            total_time_driven_per_day = ndrivers * drv_time_per_driver
 
-        total_time_driven_per_day = ndrivers * drv_time_per_driver
-
-        #Area
-        nareas = sim.areas_no
-        nkms_perday = sim.no_of_kms
-        total_kms_covered_perday = nareas * nkms_perday
+            #Area
+            nareas = sim.areas_no
+            nkms_perday = sim.no_of_kms
+            total_kms_covered_perday = nareas * nkms_perday
 
 
-        #cars
-        nlpg_cars = sim.lpg_cars_no
-        npet_cars = sim.petrol_cars_no
-        ndis_cars = sim.disel_cars_no
-        total_cars = nlpg_cars + npet_cars + ndis_cars
-        lpg_car_ratio = nlpg_cars / total_cars
-        pet_car_ratio = npet_cars / total_cars
-        dis_car_ratio = ndis_cars / total_cars
+            #cars
+            nlpg_cars = sim.lpg_cars_no
+            npet_cars = sim.petrol_cars_no
+            ndis_cars = sim.disel_cars_no
+            total_cars = nlpg_cars + npet_cars + ndis_cars
+            lpg_car_ratio = nlpg_cars / total_cars
+            pet_car_ratio = npet_cars / total_cars
+            dis_car_ratio = ndis_cars / total_cars
 
-        pet_car_distance =  total_kms_covered_perday * pet_car_ratio
-        lpg_car_distance =  total_kms_covered_perday * lpg_car_ratio
-        dis_car_distance =  total_kms_covered_perday * dis_car_ratio
+            pet_car_distance =  total_kms_covered_perday * pet_car_ratio
+            lpg_car_distance =  total_kms_covered_perday * lpg_car_ratio
+            dis_car_distance =  total_kms_covered_perday * dis_car_ratio
 
-        #cost
-        pet_price = sim.petrol_price
-        dis_price = sim.disel_price
-        lpg_price = sim.lpg_price
+            #cost
+            pet_price = sim.petrol_price
+            dis_price = sim.disel_price
+            lpg_price = sim.lpg_price
 
-        pet_maint = sim.avg_petrol_maint
-        dis_maint = sim.avg_disel_maint
-        lpg_maint = sim.avg_lpg_maint
+            pet_maint = sim.avg_petrol_maint
+            dis_maint = sim.avg_disel_maint
+            lpg_maint = sim.avg_lpg_maint
 
-        # We assume FuelWastage  
-        #basedon 30% Heavy Traffic 40 % normal traffic 20% night traffic
-        fuel_wastage_heavy_traffic = 10 * random.uniform(25/100, 30/100)
-        fuel_wastage_normal_traffic = 5 * random.uniform(35/100, 40/100)
-        fuel_wastage_night_traffic  = 2 * random.uniform(15/100, 20/100)
-        total_fuel_wastage = fuel_wastage_heavy_traffic + fuel_wastage_normal_traffic + fuel_wastage_night_traffic
+            # We assume FuelWastage  
+            #basedon 30% Heavy Traffic 40 % normal traffic 20% night traffic
+            fuel_wastage_heavy_traffic = 10 * random.uniform(5/100, 30/100)
+            fuel_wastage_normal_traffic = 5 * random.uniform(5/100, 40/100)
+            fuel_wastage_night_traffic  = 2 * random.uniform(5/100, 20/100)
+            total_fuel_wastage = fuel_wastage_heavy_traffic + fuel_wastage_normal_traffic + fuel_wastage_night_traffic
 
-        # Per fuel cost
-        petrol_car_cost = pet_price * pet_car_distance + total_fuel_wastage * pet_car_distance
-        disel_car_cost = dis_price * dis_car_distance + total_fuel_wastage * dis_car_distance
-        lpg_car_cost = lpg_price * lpg_car_distance + total_fuel_wastage * lpg_car_distance
+            # Per fuel cost
+            petrol_car_cost = pet_price * pet_car_distance + total_fuel_wastage * pet_car_distance
+            disel_car_cost = dis_price * dis_car_distance + total_fuel_wastage * dis_car_distance
+            lpg_car_cost = lpg_price * lpg_car_distance + total_fuel_wastage * lpg_car_distance
 
-        petrol_car_cost = petrol_car_cost + pet_maint
-        disel_car_cost  = disel_car_cost + dis_maint
-        lpg_car_cost    = lpg_car_cost + lpg_maint
+            petrol_car_cost = petrol_car_cost + pet_maint
+            disel_car_cost  = disel_car_cost + dis_maint
+            lpg_car_cost    = lpg_car_cost + lpg_maint
 
-        total_pet_car_cost = petrol_car_cost * npet_cars
-        total_dis_car_cost = disel_car_cost * ndis_cars
-        total_lpg_car_cost = lpg_car_cost * nlpg_cars
-        total_fuel_cost = total_pet_car_cost + total_dis_car_cost + total_lpg_car_cost
+            total_pet_car_cost = petrol_car_cost * npet_cars
+            total_dis_car_cost = disel_car_cost * ndis_cars
+            total_lpg_car_cost = lpg_car_cost * nlpg_cars
+            total_fuel_cost = total_pet_car_cost + total_dis_car_cost + total_lpg_car_cost
 
-        r_total_car_cost = total_fuel_cost + sim.avg_maint_cost * total_cars
+            r_total_car_cost = total_fuel_cost + sim.avg_maint_cost * total_cars
 
-        #we assume we pay total car cost. Drivers are payed per hour.
-        #fixed pay per driver
-        fixed_driver_pay_perday = 500
-        per_driver_cost = fixed_driver_pay_perday * drv_time_per_driver
-        r_total_driver_cost = ndrivers * per_driver_cost
+            #we assume we pay total car cost. Drivers are payed per hour.
+            
+            pay_perday = sim.driver_salary
+            per_driver_cost = pay_perday * drv_time_per_driver
+            r_total_driver_cost = ndrivers * pay_perday
 
-        print('--->',' Total driver_cost', r_total_driver_cost)
-        print('---->',' Total car Cost', r_total_car_cost)
+            print('--->',' Total driver_cost', r_total_driver_cost)
+            print('---->',' Total car Cost', r_total_car_cost)
+            r = ResultsPerDay(r_total_driver_cost, r_total_car_cost, total_cars)
+            sim.status='DONE'
+            db_session.add(r)
+            db_session.commit()
 
 
     except Exception as e:
         print (e)
+        print_exception()
 
 
 def run_long_task(data):
