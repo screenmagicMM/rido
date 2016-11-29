@@ -32,9 +32,9 @@ $.validator.setDefaults({
       'petrol_cars_no' : "required",
       'disel_cars_no' : "required",
       'avg_maint_cost' : "required",
-      'avg_petrol_milage' : "required",
-      'avg_disel_milege' : "required",
-      'avg_lpg_milege' : "required"
+      'avg_petrol_maint' : "required",
+      'avg_disel_maint' : "required",
+      'avg_lpg_maint' : "required"
         
       },
       messages: {
@@ -51,9 +51,9 @@ $.validator.setDefaults({
       'petrol_cars_no' : "Please enter no of Petrol Cars we have",
       'disel_cars_no' : "Please enter no of Disel cars we have",
       'avg_maint_cost' : "Please enter Average Maintenance Cost per driver",
-      'avg_petrol_milage' : "Please enter Average KM Per Litre of Petrol",
-      'avg_disel_milege' : "Please enter Average KM Per Litre of Diesel",
-      'avg_lpg_milege' : "Please enter Average KM Per Pack of Cylinder"
+      'avg_petrol_maint' : "Please enter Average Maintenace Cost of Petrol Car ",
+      'avg_disel_maint' : "Please enter Average Maintenace Cost of  Diesel Car",
+      'avg_lpg_maint' : "Please enter Average Maintenace Cost of  LPG Cylinder Car"
         
       },
        /*highlight: function(element) {
@@ -90,15 +90,15 @@ $.validator.setDefaults({
     var disel_cars_no = $("#noofdiselcar").val();
     // Maint cost
     var avg_maint_cost = $("#avgmaint").val();
-    var avg_petrol_milage = $("#avgpetrolmil").val();
-    var avg_disel_milege = $("#avgdiselmil").val();
-    var avg_lpg_milege = $("#avglpgmil").val();
+    var avg_petrol_maint = $("#avgpetrolmaint").val();
+    var avg_disel_maint = $("#avgdiselmaint").val();
+    var avg_lpg_maint = $("#avglpgmaint").val();
 
     if(total_investment && no_of_days && areas_no && no_of_kms &&
        petrol_price && disel_price && lpg_price && no_of_drivers &&
        drive_time_per_drver && lpg_cars_no && petrol_cars_no &&
-       disel_cars_no && avg_maint_cost && avg_petrol_milage && avg_disel_milege &&
-       avg_lpg_milege)
+       disel_cars_no && avg_maint_cost && avg_petrol_maint && avg_disel_maint &&
+       avg_lpg_maint)
     {
       var formdata = {
         'total_investment':total_investment,
@@ -119,9 +119,9 @@ $.validator.setDefaults({
       'disel_cars_no' : disel_cars_no,
       // Maint cost
       'avg_maint_cost' : avg_maint_cost,
-      'avg_petrol_milage' : avg_petrol_milage,
-      'avg_disel_milege' : avg_disel_milege,
-      'avg_lpg_milege' : avg_lpg_milege,
+      'avg_petrol_maint' : avg_petrol_maint,
+      'avg_disel_maint' : avg_disel_maint,
+      'avg_lpg_maint' : avg_lpg_maint,
     };
         $.ajax({
         type: "POST",

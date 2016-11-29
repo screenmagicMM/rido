@@ -38,9 +38,9 @@ class SimulationTask(Base):
     petrol_cars_no = Column(Integer)
     disel_cars_no = Column(Integer)
     avg_maint_cost = Column(Float)
-    avg_petrol_milage = Column(Float)
-    avg_disel_milege = Column(Float)
-    avg_lpg_milege = Column(Float)
+    avg_petrol_maint = Column(Float)
+    avg_disel_maint = Column(Float)
+    avg_lpg_maint = Column(Float)
 
 
     def __init__(self,kwargs):
@@ -60,9 +60,9 @@ class SimulationTask(Base):
         self.petrol_cars_no = int(kwargs['petrol_cars_no'])
         self.disel_cars_no = int(kwargs['disel_cars_no'])
         self.avg_maint_cost = float(kwargs['avg_maint_cost'])
-        self.avg_petrol_milage = float(kwargs['avg_petrol_milage'])
-        self.avg_disel_milege = float(kwargs['avg_disel_milege'])
-        self.avg_lpg_milege = float(kwargs['avg_lpg_milege'])
+        self.avg_petrol_maint = float(kwargs['avg_petrol_maint'])
+        self.avg_disel_maint = float(kwargs['avg_disel_maint'])
+        self.avg_lpg_maint = float(kwargs['avg_lpg_maint'])
 
 
     def __repr__(self):

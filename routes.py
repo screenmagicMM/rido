@@ -28,6 +28,8 @@ def create_rido_application(configfile=None):
     def shutdown_session(exception=None):
         db_session.remove()
 
+
+
     @app.before_first_request
     def setup():
         print ("First Executed")
@@ -39,6 +41,8 @@ def create_rido_application(configfile=None):
         db_session.commit()
         print ('comited happened')
 
+
+
     @app.route('/')
     def index():
         return render_template('index.html', current_user=current_user)
@@ -46,14 +50,7 @@ def create_rido_application(configfile=None):
     @app.route('/input')
     def input():
         return render_template('input.html', current_user=current_user)
-
-    @app.route('/login')
-    def login():
-        return render_template('login.html', current_user=current_user)
-
-    @app.route('/lockscreen')
-    def lockscreen():
-        return render_template('lockscreen.html', current_user=current_user)
+        
 
     @app.route('/simulation', methods=['POST'])
     def simulation():
