@@ -77,11 +77,13 @@ class ResultsPerDay(Base):
     driver_cost = Column(Float)
     car_cost = Column(Float)
     cars = Column(Integer)
+    customer_profit = Column(Float)
 
-    def __init__(self, driver_cost, car_cost, cars):
+    def __init__(self, driver_cost, car_cost, cars, customer_profit):
         self.driver_cost = driver_cost
         self.car_cost = car_cost
         self.cars = cars
+        self.customer_profit = customer_profit
 
     def __repr__(self):
         return '<ResultsPerDay %r>' % (self.id)

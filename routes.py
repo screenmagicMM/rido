@@ -57,16 +57,24 @@ def create_rido_application(configfile=None):
                 if sim.status == 'DONE':
                     data = dict()
                     results = db_session.query(ResultsPerDay).all()
-                    sumdrv, sumcar = db_session.query(func.sum(ResultsPerDay.driver_cost),
-                                            func.sum(ResultsPerDay.car_cost)).first()
+                    #We stored database per day
+                    #inorder to get total we sum driver_cost, car_cost, customer_profit
+                    sumdrv, sumcar, sumcus = db_session.query(func.sum(ResultsPerDay.driver_cost),
+                                            func.sum(ResultsPerDay.car_cost),
+                                            func.sum(ResultsPerDay.customer_profit)).first()
                     data['investment'] = sim.total_investment
                     data['drivercost']= "{0:.2f}".format(sumdrv)
                     data['carcost']= "{0:.2f}".format(sumcar)
                     investment = sim.total_investment
-                    profit = investment - (sumdrv + sumcar)
+                    profit = (investment + sumcus) - (sumdrv + sumcar)
                     g_logger.debug('--> Profit {} '.format(profit))
                     g_logger.debug('--> Total investment{} '.format(investment))
+                    g_logger.debug('--> Customer income{}'.format(sumcus))
+                    g_logger.debug('---> Driver Expense {}'.format(sumdrv))
+                    g_logger.debug('---> Car Expense {}'.format(sumcar))
+                    
                     data['profit'] = "{0:.2f}".format(profit)
+                    data['customer_income'] = "{0:.2f}".format(sumcus)
 
                     #prepare Chart Data
                     labels = []

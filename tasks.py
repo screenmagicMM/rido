@@ -64,12 +64,22 @@ def calculate_tasks():
         #Per Day
         ndays = sim.no_of_days
         for x in range(1,ndays+1):
+
+
+            # we assume customer pay
             #PER Drivers
             ndrivers = sim.no_of_drivers
             drv_time_per_driver = sim.drive_time_per_drver;
 
             total_time_driven_per_day = ndrivers * drv_time_per_driver
 
+            #customers Payment
+            # we assume customer may pay some thinglike  (50 to 100 per hour)
+            customer_pay_per_hr = random.uniform(50,100)
+            # Total customer pays = customer pay * ndrivers * drive_time_per_hr
+            r_total_customer_paid = customer_pay_per_hr * total_time_driven_per_day 
+
+            g_logger.debug('      CustomerPay = {}'.format(r_total_customer_paid))
             #Area
             nareas = sim.areas_no
             nkms_perday = sim.no_of_kms
@@ -121,15 +131,16 @@ def calculate_tasks():
 
             r_total_car_cost = total_fuel_cost + sim.avg_maint_cost * total_cars
 
-            #we assume we pay total car cost. Drivers are payed per hour.
+            #we assume we pay total car cost. Drivers are payed per hours
             
-            pay_perday = sim.driver_salary
-            per_driver_cost = pay_perday * drv_time_per_driver
-            r_total_driver_cost = ndrivers * pay_perday
+            #driver pay per_day = driver_salary * #drivers * #drvtimeperdriver *
+            #                     
+            pay_perday = sim.driver_salary * ndrivers * drv_time_per_driver
+            r_total_driver_cost = pay_perday
 
             g_logger.debug(' Total driver_cost = {}'.format(r_total_driver_cost))
             g_logger.debug(' Total car Cost = {}'.format(r_total_car_cost))
-            r = ResultsPerDay(r_total_driver_cost, r_total_car_cost, total_cars)
+            r = ResultsPerDay(r_total_driver_cost, r_total_car_cost, total_cars, r_total_customer_paid)
             sim.status='DONE'
             db_session.add(r)
             db_session.commit()
