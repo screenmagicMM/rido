@@ -35,8 +35,8 @@ def create_rido_application(configfile=None):
     def setup():
         print ("First Executed")
         # Recreate database each time for demo
-        #Base.metadata.drop_all(bind=engine)
-        #Base.metadata.create_all(bind=engine)
+        Base.metadata.drop_all(bind=engine)
+        Base.metadata.create_all(bind=engine)
         #db.session.add(SimulationTask('First'))
         #db.session.add(SimulationTask('Second'))
         db_session.commit()
@@ -49,30 +49,44 @@ def create_rido_application(configfile=None):
         sim = db_session.query(SimulationTask).first()
         print('--->',sim)
         try:
-            #if not sim == None:
-            #    if sim.status == 'DONE':
-            data = dict()
-            results = db_session.query(ResultsPerDay).all()
-            sumdrv, sumcar = db_session.query(func.sum(ResultsPerDay.driver_cost),
-                                    func.sum(ResultsPerDay.car_cost)).first()
-            data['ncars'] = results[0].cars
-            data['drivercost']= "{0:.2f}".format(sumdrv)
-            data['carcost']= "{0:.2f}".format(sumcar)
-            investment = sim.total_investment
-            profit = investment - (sumdrv + sumcar)
-            print('--> Profit ',profit)
-            print('--> Total investment', investment)
-            data['profit'] = "{0:.2f}".format(profit)
+            if not sim == None:
+                if sim.status == 'DONE':
+                    data = dict()
+                    results = db_session.query(ResultsPerDay).all()
+                    sumdrv, sumcar = db_session.query(func.sum(ResultsPerDay.driver_cost),
+                                            func.sum(ResultsPerDay.car_cost)).first()
+                    data['ncars'] = results[0].cars
+                    data['drivercost']= "{0:.2f}".format(sumdrv)
+                    data['carcost']= "{0:.2f}".format(sumcar)
+                    investment = sim.total_investment
+                    profit = investment - (sumdrv + sumcar)
+                    print('--> Profit ',profit)
+                    print('--> Total investment', investment)
+                    data['profit'] = "{0:.2f}".format(profit)
 
-            print(data)
-            return render_template('index.html', current_user = current_user, results = data)
-            #    else:
-             #       return render_template('lockscreen.html', current_user=current_user)
-        #    else:
-         #       return render_template('lockscreen.html', current_user=current_user)
+                    #prepare Chart Data
+                    labels = []
+                    dcost = []
+                    ccost = []
+                    for x in results:
+                        labels += [int(x.id)]
+                        dcost += [x.driver_cost]
+                        ccost += [x.car_cost/100]
+
+                    cdata = [dcost,ccost]
+
+                    print('---->',labels)
+                    print('---->',cdata)
+                    return render_template('index.html', current_user = current_user, results = data, 
+                                          chartlabel = labels, chartdata= cdata,profit=profit, 
+                                          carexpenses=sumcar, driverexpenses=sumdrv, nodays=sim.no_of_days)
+                else:
+                    return render_template('lockscreen.html', current_user=current_user)
+            else:
+                return render_template('lockscreen.html', current_user=current_user)
         except Exception as e:
             print_exception()
-            #return render_template('lockscreen.html', current_user=current_user)
+            return render_template('lockscreen.html', current_user=current_user)
 
 
     @app.route('/input')

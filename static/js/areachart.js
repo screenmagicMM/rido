@@ -1,4 +1,4 @@
-$(function () {
+function areaChart(chartdata) {
     /* ChartJS
      * -------
      * Here we will create a few charts using ChartJS
@@ -81,7 +81,7 @@ $(function () {
     //Create the line chart
     areaChart.Line(areaChartData, areaChartOptions);
 
-  }());
+}
 
 
 
