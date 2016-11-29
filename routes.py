@@ -2,13 +2,14 @@
 from flask import Flask, render_template, request, Response
 from flask import jsonify
 from flask_adminlte import AdminLTE
-from models import AdminUser, SimulationTask, Base
+from models import AdminUser, SimulationTask, ResultsPerDay, Base
 from concurrent.futures import ThreadPoolExecutor
 import sys
 import json
 from models import db_session, engine, Base
 from tasks import run_long_task
-
+from tasks import print_exception
+from sqlalchemy import func
 
 #Only One Task per time
 executor = ThreadPoolExecutor(1)
@@ -34,8 +35,8 @@ def create_rido_application(configfile=None):
     def setup():
         print ("First Executed")
         # Recreate database each time for demo
-        Base.metadata.drop_all(bind=engine)
-        Base.metadata.create_all(bind=engine)
+        #Base.metadata.drop_all(bind=engine)
+        #Base.metadata.create_all(bind=engine)
         #db.session.add(SimulationTask('First'))
         #db.session.add(SimulationTask('Second'))
         db_session.commit()
@@ -45,7 +46,34 @@ def create_rido_application(configfile=None):
 
     @app.route('/')
     def index():
-        return render_template('index.html', current_user=current_user)
+        sim = db_session.query(SimulationTask).first()
+        print('--->',sim)
+        try:
+            #if not sim == None:
+            #    if sim.status == 'DONE':
+            data = dict()
+            results = db_session.query(ResultsPerDay).all()
+            sumdrv, sumcar = db_session.query(func.sum(ResultsPerDay.driver_cost),
+                                    func.sum(ResultsPerDay.car_cost)).first()
+            data['ncars'] = results[0].cars
+            data['drivercost']= "{0:.2f}".format(sumdrv)
+            data['carcost']= "{0:.2f}".format(sumcar)
+            investment = sim.total_investment
+            profit = investment - (sumdrv + sumcar)
+            print('--> Profit ',profit)
+            print('--> Total investment', investment)
+            data['profit'] = "{0:.2f}".format(profit)
+
+            print(data)
+            return render_template('index.html', current_user = current_user, results = data)
+            #    else:
+             #       return render_template('lockscreen.html', current_user=current_user)
+        #    else:
+         #       return render_template('lockscreen.html', current_user=current_user)
+        except Exception as e:
+            print_exception()
+            #return render_template('lockscreen.html', current_user=current_user)
+
 
     @app.route('/input')
     def input():
@@ -72,7 +100,6 @@ def create_rido_application(configfile=None):
     def test():
         tasks = db_session.query(SimulationTask).all()
         return u"<br>".join([u"{0}: {1}".format(task.id, task.status) for task in tasks])
-
 
 
     return app

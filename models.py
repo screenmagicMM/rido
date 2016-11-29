@@ -86,14 +86,14 @@ class ResultsPerDay(Base):
 
     def __repr__(self):
         return '<ResultsPerDay %r>' % (self.id)
-        
+
 
 class AdminUser(object):
     """
     User Object Gives Info to Flask-adminLTE User Info.
     """
-    full_name = "Tamilselvan"
-    avatar = "/static/img/avatar.png"
+    full_name = "Rido Taxi"
+    avatar = "/static/img/taxi.png"
     created_at = dateutil.parser.parse("November 28, 2016")
 
             

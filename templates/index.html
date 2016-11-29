@@ -76,7 +76,7 @@
             {{
               widgets.small_box(
                 bgcolor="bg-aqua",
-                header=150,
+                header=results['ncars'],
                 body="Total No of Cars",
                 iconclass="fa fa-car",
                 footerlink="#"
@@ -86,7 +86,7 @@
             {{
               widgets.small_box(
                 bgcolor="bg-green",
-                header=53,
+                header=results['carcost'],
                 body="Total Cost for Car",
                 iconclass="fa fa-money",
                 footerlink="#"
@@ -96,7 +96,7 @@
             {{
               widgets.small_box(
                 bgcolor="bg-yellow",
-                header=43,
+                header=results['drivercost'],
                 body="Total Pay to Drivers",
                 iconclass="fa fa-money",
                 footerlink="#"
@@ -106,7 +106,7 @@
             {{
               widgets.small_box(
                 bgcolor="bg-red",
-                header=65,
+                header=results['profit'],
                 body="Total Profit for Company",
                 iconclass="fa fa-money",
                 footerlink="#"
